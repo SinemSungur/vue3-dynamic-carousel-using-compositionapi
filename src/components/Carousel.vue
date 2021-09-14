@@ -10,6 +10,16 @@
         <span class="material-icons md-24"> chevron_right </span>
       </div>
     </div>
+
+    <div class="pagination">
+      <span
+        @click="goToSlide(index)"
+        v-for="(slide, index) in getSlideCount"
+        :key="index"
+        :class="{ active: index + 1 === currentSlide }"
+      >
+      </span>
+    </div>
   </div>
 </template>
 
@@ -17,7 +27,7 @@
 import { ref, onMounted } from "vue";
 export default {
   setup() {
-    const currentSlide = ref(3);
+    const currentSlide = ref(1);
     const getSlideCount = ref(null);
 
     const nextSlide = () => {
@@ -36,6 +46,10 @@ export default {
       currentSlide.value -= 1;
     };
 
+    const goToSlide = (index) => {
+      currentSlide.value = index + 1;
+    };
+
     onMounted(() => {
       getSlideCount.value = document.querySelectorAll(".slide").length;
     });
@@ -45,6 +59,7 @@ export default {
       getSlideCount,
       nextSlide,
       prevSlide,
+      goToSlide,
     };
   },
 };
@@ -74,11 +89,33 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(12, 66, 12, 0.384);
+    background-color: rgba(12, 66, 12, 0.74);
     border-radius: 50%;
     color: white;
     width: 40px;
     height: 40px;
+  }
+}
+
+.pagination {
+  position: absolute;
+  bottom: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  span {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+  }
+
+  .active {
+    background-color: rgb(12, 66, 12);
   }
 }
 </style>
